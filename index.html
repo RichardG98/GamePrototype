@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="gameStyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas</title>
+</head>
+<body>
+    <table style="border:solid black">
+        <tr>
+            <td COLSPAN=3><canvas id = "game_layer" width = "400" height="400"></canvas></td>
+        </tr>
+        <tr>
+            <td id="astronautFace" rowspan="2"><canvas id = "astroFace" width = "94" height="100"></canvas></td>
+            <td id = "scoreboard"></td>
+            <td id="hpBox">HP BOX</td>
+        </tr>
+        <tr>
+            <td id="weaponBox" COLSPAN="2"></td>
+        </tr>
+    </table>
+    <script src = "canvas.js"></script>
+</body>
+</html>

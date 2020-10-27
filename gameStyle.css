@@ -1,0 +1,32 @@
+table
+{
+}
+
+td
+{
+}
+
+#scoreboard{
+    font-size: 12px;
+    height: 25px;
+    width: 141px;
+    border: 1px solid black;
+    text-align: center;
+}
+#weaponBox{
+    font-size: 12px;
+    height: 75px;
+    width: 196px;
+    border: 1px solid black;
+    text-align: center;
+}
+#hpBox{
+    font-size: 12px;
+    height: 25px;
+    width: 141px;
+    border: 1px solid black;
+    text-align: center;
+}
+#astronautFace{
+    border: 1px solid black;
+}
