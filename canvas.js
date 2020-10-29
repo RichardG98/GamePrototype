@@ -1,17 +1,20 @@
-
 /*var Vector2d = function(x,y){
     this.x = x;
     this.y = y;
 };
+
 function vector_addition(v1, v2){
     return new Vector2d(v1.x + v2.x, v1.y + v2.y);
 }
+
 function vector_subtraction(v1, v2){
     return new Vector2d(v1.x - v2.x, v1.y - v2.y);
 }
+
 function vector_scalar_multiplicaton(v1, s){
     return new Vector2d (v1.x * s, v1.y * s);
 }
+
 function vector_length(v1){
     return Math.sqrt(v1.x * v1.x + v1.y * v1.y);
 }
@@ -36,13 +39,13 @@ var move_right = false;
 var weapon_up = false;
 var weapon_down = false;
 var weapon_shoot = false;
-var playerWidth = 40;
-var playerHeight = 30;
+var playerWidth = 30;
+var playerHeight = 40;
 var projectileWidth = 6;
 var projectileHeight = 10;
 var enemiesKilled = 0;
 //trash and weaponNames indexes coordinate with eachother
-var trash = ["trash", "recycling", "compost"];
+var trash = ["textile", "recycling", "compost"];
 var weaponNames = ["Trash Teleporter", "Recycling Rocket", "Compost Cannon"];
 var currWeapon = 0;
 
@@ -75,13 +78,13 @@ function key_up_handler(event){
             {
                 currWeapon = 0;
                 projectile.trashType = trash[currWeapon];
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
             else
             {
                 currWeapon++;
                 projectile.trashType = trash[currWeapon];
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
         }
         else //else the projectile is on screen so we only increment the currWeapon
@@ -90,12 +93,12 @@ function key_up_handler(event){
             if(currWeapon==(trash.length-1))
             {
                 currWeapon = 0;
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
             else
             {
                 currWeapon++;
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
         }
     }
@@ -108,13 +111,13 @@ function key_up_handler(event){
             {
                 currWeapon = (trash.length-1);
                 projectile.trashType = trash[currWeapon];
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
             else
             {
                 currWeapon--;
                 projectile.trashType = trash[currWeapon];
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
         }
         else //else the projectile is on screen so we only decrement the currWeapon
@@ -122,12 +125,12 @@ function key_up_handler(event){
             if(currWeapon==0)
             {
                 currWeapon = (trash.length-1);
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
             else
             {
                 currWeapon--;
-                weaponBox.textContent="Weapon: " + weaponNames[currWeapon];
+                updateWeaponBox(currWeapon);
             }
         }
     }
@@ -159,18 +162,19 @@ function Projectile(x, y){
     this.height = projectileHeight;
     this.speedy = 3;
     this.trashType = trash[currWeapon];
+    this.img = new Image(this.x, this.y);
 }
 Projectile.prototype.draw = function(){
-    if(this.trashType == "trash"){
-        context.fillStyle = "red";
+    if(this.trashType == "textile"){
+        this.img.src = "assets/textileBullet.png";
     }
     else if(this.trashType == "recycling"){
-        context.fillStyle = "white";
+        this.img.src = "assets/recycleBullet.png";
     }
     else if(this.trashType == "compost"){
-        context.fillStyle = "pink";
+        this.img.src = "assets/compostBullet.png";
     }
-    context.fillRect(this.x, this.y, this.width, this.height);
+    context.drawImage(this.img, this.x, this.y);
     //if the projectile reaches the top of the game, set weapon_shoot to false, reset projectile y val and change projectile type to currWeapon
     if(this.y <= 0)
     {
@@ -194,10 +198,11 @@ function Player(x, y){
     this.height = playerHeight;
     this.speedx = 0.6;
     this.hp = 3;
+    this.img = new Image();
+    this.img.src = "assets/spaceship.png";
 }
 Player.prototype.draw = function(){
-    context.fillStyle = "gold";
-    context.fillRect(this.x, this.y, this.width, this.height);
+    context.drawImage(this.img, this.x, this.y);
 };
 
 Player.prototype.update = function(){
@@ -234,14 +239,19 @@ function Enemy(x, y){
     this.direction = -1;
     this.speedy = 0.1
     this.alive = true;
-    this.trashType = "trash";
+    this.trashType;
+    this.weapon;
+    this.img = new Image();
 }
 Enemy.prototype.draw = function()
 {
     if(this.alive)
     {
-        context.fillStyle = "green";
-        context.fillRect(this.x, this.y, this.width, this.height);
+        if(this.trashType == trash[0]){this.img.src="assets/textileEnemy1.png";}
+        else if(this.trashType == trash[1]){this.img.src="assets/recyclingEnemy1.png";}
+        else if(this.trashType == trash[2]){this.img.src="assets/compostEnemy1.png";}
+        //context.fillStyle = "green";
+        context.drawImage(this.img, this.x, this.y);
     }
     else
     {
@@ -283,6 +293,9 @@ function collisionDetection(enemies) {
                 score += 10;
                 scoreboard.textContent="Score: " + score;
 
+                //update textBox
+                textBox.textContent = "Nice Shot!";
+
                 //setting projectile y to negative value to reset it
                 //may be better way to do this
                 projectile.y = -1000;
@@ -318,6 +331,10 @@ function collisionDetection(enemies) {
                     }
                 }
             }
+            else
+            {
+                textBox.textContent = "Looks like you're using the wrong weapon! That's a " + currEnemy.trashType + " enemy.";
+            }
             
         }
     } 
@@ -345,6 +362,55 @@ function itsAHit(proj, currEnemy)
     }
 }
 
+function updateWeaponBox(currWeap)
+{
+    if(currWeap == 0)
+    {
+        textileWeaponBox.className = "chosenWeapon";
+        recyclingWeaponBox.className = "unchosenWeapon";
+        compostWeaponBox.className = "unchosenWeapon";
+    }
+    else if(currWeap == 1)
+    {
+        recyclingWeaponBox.className = "chosenWeapon";
+        textileWeaponBox.className = "unchosenWeapon";
+        compostWeaponBox.className = "unchosenWeapon";
+    }
+    else if(currWeap == 2)
+    {
+        compostWeaponBox.className = "chosenWeapon";
+        textileWeaponBox.className = "unchosenWeapon";
+        recyclingWeaponBox.className = "unchosenWeapon";
+    }
+}
+
+function generateEnemyType(enemyArr)
+{
+    var randNum = Math.floor(Math.random() * 3);
+    for(i = 0; i < enemyArr.length; i++)
+    {
+        enemyArr[i].trashType=trash[randNum];
+    }
+    return randNum;
+}
+
+function astronautTalks(trashNum)
+{
+    if(trashNum == 0)
+    {
+        //textBox.textContent = "TEXT BOX";
+    }
+    else if(trashNum == 1)
+    {
+        //textBox.textContent = "TEXT BOX";
+        //"Look at that cluster of beer cans! There must have been a banger last night! Use your recycling rocket to send those cans where they belong.";
+    }
+    else if(trashNum == 2)
+    {
+        //textBox.textContent = "TEXT BOX";
+    }
+}
+
 var player_x = canvas.width/2;
 //var player_y = 175;
 var player_y = 366;
@@ -360,6 +426,10 @@ var enemy7 = new Enemy(270,25);
 var enemy8 = new Enemy(310,25);
 var enemy9 = new Enemy(350,25);
 var enemies = [enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9];
+var enemyNum = generateEnemyType(enemies);
+var textBox = document.getElementById("textBox");
+astronautTalks(enemyNum);
+
 
 //used to track the leftmost and rightmost enemies for when they hit the canvas ends
 var leftEnemy = enemy1;
@@ -368,8 +438,15 @@ var rightEnemy = enemy9;
 var scoreboard = document.getElementById("scoreboard");
 scoreboard.textContent="Score: " + score;
 //initialize weaponBox for displaying the current weapon
-var weaponBox = document.getElementById("weaponBox");
-weaponBox.textContent="Weapon: " + weaponNames[currWeapon]
+var textileWeaponBox = document.getElementById("textileWeaponBox");
+textileWeaponBox.className = "chosenWeapon";
+var recyclingWeaponBox = document.getElementById("recyclingWeaponBox");
+recyclingWeaponBox.className = "unchosenWeapon";
+var compostWeaponBox = document.getElementById("compostWeaponBox");
+compostWeaponBox.className = "unchosenWeapon";
+
+var BGImage = new Image();
+BGImage.src = "/assets/GameBackdrop1.png";
 
 function execution() {
     var canvas = document.getElementById("game_layer");
@@ -386,11 +463,38 @@ function execution() {
         projectile.draw();
     }
     
-    for(i = 0; i < enemies.length; i++)
+    /* for(i = 0; i < enemies.length; i++)
     {
         enemies[i].update();
         enemies[i].draw();
-    }
+    } */
+
+    enemy1.update();
+    enemy1.draw();
+
+    enemy2.update();
+    enemy2.draw();
+    
+    enemy3.update();
+    enemy3.draw();
+    
+    enemy4.update();
+    enemy4.draw();
+    
+    enemy5.update();
+    enemy5.draw();
+    
+    enemy6.update();
+    enemy6.draw();
+    
+    enemy7.update();
+    enemy7.draw();
+    
+    enemy8.update();
+    enemy8.draw();
+    
+    enemy9.update();
+    enemy9.draw();
 
     
     window.requestAnimationFrame(execution);

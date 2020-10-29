@@ -1,5 +1,6 @@
 table
 {
+    background-color: #9e9e9e;
 }
 
 td
@@ -7,26 +8,84 @@ td
 }
 
 #scoreboard{
-    font-size: 12px;
-    height: 25px;
-    width: 141px;
+    background-color: #616161;
+    font-size: 10px;
+    height: 13px;
+    /* width: 141px; */
     border: 1px solid black;
+    text-align: left;
+}
+#compostWeaponBox{
+    font-size: 12px;
+    height: 60px;
+    width: 63px;
+    /* border: 1px solid black; */
     text-align: center;
 }
-#weaponBox{
+#textileWeaponBox{
     font-size: 12px;
-    height: 75px;
-    width: 196px;
-    border: 1px solid black;
+    height: 60px;
+    width: 63px;
+    /* border: 1px solid black; */
+    text-align: center;
+}
+#recyclingWeaponBox{
+    font-size: 12px;
+    height: 60px;
+    width: 63px;
+    /* border: 1px solid black; */
     text-align: center;
 }
 #hpBox{
-    font-size: 12px;
-    height: 25px;
-    width: 141px;
+    background-color: #616161;
+    font-size: 10px;
+    height: 13px;
+    /* width: 141px; */
     border: 1px solid black;
-    text-align: center;
+    text-align: right;
 }
-#astronautFace{
+#textBox{
+    background-color: #616161;
+    font-size: 10px;
+    height: 50px;
+    width: 190px;
     border: 1px solid black;
+    vertical-align: top;
+    text-align: left;
+}
+
+td.gtext {
+    color: white;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    /* text-shadow: 2px 2px 5px blue; */
+    font-size: 20px;
+}
+
+#astronautFace{
+    background-color: #616161;
+    border: 1px solid black;
+    width: 70px;
+    vertical-align:bottom;text-align:center;
+}
+
+#game_table
+{
+    height: 540px;
+    border-collapse: separate;
+}
+
+td.chosenWeapon
+{
+    border: 1px solid red;
+    background-color: white;
+}
+
+td.unchosenWeapon
+{
+    border: 1px solid black; 
+    background-color: #616161;
+}
+
+#game_layer{
 }
